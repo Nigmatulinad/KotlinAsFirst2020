@@ -18,7 +18,14 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = TODO()
+fun isNumberHappy(number: Int): Boolean {
+    val sum1 = number / 100
+    val sum2 = number % 100
+        return when {
+sum1 % 10 + sum1 / 10 == sum2 / 10 + sum2 % 10 -> true
+            else -> false
+        }
+}
 
 /**
  * Простая (2 балла)
@@ -59,4 +66,9 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    return when {
+        ((a<=s) && ((b<=r) || (c<=r))) || ((b<=s) && ((a<=r) || (c<=r))) || ((c<=s) && ((b<=r) || (a<=r))) -> true
+        else -> false
+    }
+}
