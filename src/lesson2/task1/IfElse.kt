@@ -98,7 +98,7 @@ fun timeForHalfWay(
         halfWay <= s1 -> (halfWay / v1)
         (halfWay > s1) && (halfWay < (s1 + s2)) -> t1 + (halfWay - s1) / v2
         halfWay == (s1 + s2) -> t1 + t2
-    else -> t1 + t2 + (halfWay - s1 - s2) / v3
+        else -> t1 + t2 + (halfWay - s1 - s2) / v3
 }
 }
 

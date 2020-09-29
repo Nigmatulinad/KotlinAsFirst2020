@@ -72,7 +72,12 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var a = 1
+    while (n > 0){
+a++}
+    return a
+}
 
 /**
  * Простая (2 балла)
@@ -88,8 +93,8 @@ fun fib(n: Int): Int = TODO()
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var m=2
-    while (n%m!=0){
+    var m = 2
+    while (n % m != 0) {
         m++
     }
     return m
@@ -101,9 +106,9 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var m=n-1
-    while (n%m!=0){
-        m=m-1
+    var m = n - 1
+    while (n % m != 0) {
+        m = m - 1
     }
     return m
 }
