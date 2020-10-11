@@ -73,10 +73,13 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var a = 1
-    while (n > 0){
-a++}
-    return a
+    var num = 1
+    var a = n
+    while (n > 0) {
+        a %= 10
+        num++
+    }
+    return num
 }
 
 /**
@@ -108,7 +111,7 @@ fun minDivisor(n: Int): Int {
 fun maxDivisor(n: Int): Int {
     var m = n - 1
     while (n % m != 0) {
-        m = m - 1
+        m -= 1
     }
     return m
 }
@@ -137,7 +140,21 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    var evk = 1
+    var a = n
+    var b = m
+    while (b != 0 && a != 0) {
+        if (a > b) {
+            a %= b
+            evk = a + b
+        } else {
+            b %= a
+            evk = a + b
+        }
+    }
+    return evk
+}
 
 /**
  * Средняя (3 балла)
@@ -146,7 +163,25 @@ fun lcm(m: Int, n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var evk = 1
+    var a = n
+    var b = m
+    while (b != 0 && a != 0) {
+        if (a > b) {
+            a %= b
+            evk = a + b
+        } else {
+            b %= a
+            evk = a + b
+        }
+    }
+    return when (evk) {
+        1 -> true
+        else -> false
+    }
+}
+
 
 /**
  * Средняя (3 балла)
@@ -164,7 +199,15 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var m = n
+    var revert = 0
+    while (m > 0) {
+        revert = revert * 10 + m % 10
+        m /= 10
+    }
+    return revert
+}
 
 /**
  * Средняя (3 балла)
@@ -185,7 +228,17 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var ans = false
+    var m = n % 10
+    var k = n / 10
+    while (k != 10) {
+        if (m == k % 10) ans = false
+        else ans = true
+        k /= 10
+    }
+    return ans
+}
 
 /**
  * Средняя (4 балла)
