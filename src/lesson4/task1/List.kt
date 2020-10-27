@@ -128,7 +128,7 @@ fun abs(v: List<Double>): Double = TODO()
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-    return if (list.sum() == 0.0) 0.0
+    if (list.isEmpty()) return 0.0
     else return list.sum() / list.size
 }
 
@@ -161,13 +161,11 @@ fun times(a: List<Int>, b: List<Int>): Int = TODO()
  */
 fun polynom(p: List<Int>, x: Int): Int {
     if (p.isEmpty()) return 0
-    var f = 1
     var xN = x
     var sum = p[0]
     for (i in 1 until p.size) {
-        sum += p[f] * xN
+        sum += p[i] * xN
         xN *= x
-        f++
     }
     return sum
 }
@@ -184,12 +182,10 @@ fun polynom(p: List<Int>, x: Int): Int {
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
     if (list.isEmpty()) return list
-    var f = 1
     var sum = list[0]
     for (i in 1 until list.size){
-        list[f] += sum
-        sum = list[f]
-        f ++
+        list[i] += sum
+        sum = list[i]
     }
     return list
 }
@@ -202,7 +198,7 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    val list: MutableList<Int> = mutableListOf()
+    val list = mutableListOf<Int>()
     var divider = 2
     var number = n
     while (number != 1) {
@@ -246,10 +242,10 @@ fun factorizeToString(n: Int): String {
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    val list: MutableList<Int> = mutableListOf()
+    val list = mutableListOf<Int>()
     var number = n
     while (number != 0) {
-       list.add(0, number % base)
+        list.add(0, number % base)
         number /= base
     }
     return list
@@ -282,8 +278,7 @@ fun decimal(digits: List<Int>, base: Int): Int {
     if (digits.size == 1) return digits[0]
     for (i in 1 until digits.size - 1) sepung *= base
     for (i in 1 until digits.size) {
-        ans += digits[counter] * sepung
-        counter++
+        ans += digits[i] * sepung
         sepung /= base
     }
     return ans

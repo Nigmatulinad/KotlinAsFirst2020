@@ -3,6 +3,7 @@
 package lesson3.task1
 
 import kotlin.math.sqrt
+import kotlin.time.measureTime
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -75,7 +76,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var num = 1
     var a = n
-    while (n > 0) {
+    while (a > 0) {
         a %= 10
         num++
     }
@@ -109,11 +110,11 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var m = n - 1
-    while (n % m != 0) {
-        m -= 1
+    var divisor = n - 1
+    while (n % divisor != 0) {
+        divisor--
     }
-    return m
+    return divisor
 }
 
 /**
@@ -145,17 +146,12 @@ fun lcm(m: Int, n: Int): Int {
     var a = n
     var b = m
     while (b != 0 && a != 0) {
-        if (a > b) {
-            a %= b
-            evk = a + b
-        } else {
-            b %= a
-            evk = a + b
-        }
+        if (a > b) a %= b
+        else b %= a
+        evk = a + b
     }
-    return evk
+    return m * n / evk
 }
-
 /**
  * Средняя (3 балла)
  *
@@ -168,13 +164,9 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     var a = n
     var b = m
     while (b != 0 && a != 0) {
-        if (a > b) {
-            a %= b
-            evk = a + b
-        } else {
-            b %= a
-            evk = a + b
-        }
+        if (a > b) a %= b
+        else b %= a
+        evk = a + b
     }
     return when (evk) {
         1 -> true
@@ -218,7 +210,11 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var a = revert(n)
+    return if (a == n) true
+    else return false
+}
 
 /**
  * Средняя (3 балла)
@@ -230,7 +226,7 @@ fun isPalindrome(n: Int): Boolean = TODO()
  */
 fun hasDifferentDigits(n: Int): Boolean {
     var ans = false
-    var m = n % 10
+    val m = n % 10
     var k = n / 10
     while (k != 10) {
         if (m == k % 10) ans = false
