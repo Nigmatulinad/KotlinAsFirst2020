@@ -18,7 +18,7 @@ import kotlin.time.measureTime
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -168,10 +168,9 @@ fun isCoPrime(m: Int, n: Int): Boolean {
         else b %= a
         evk = a + b
     }
-    return when (evk) {
-        1 -> true
-        else -> false
-    }
+    return if (evk == 1) true
+    else false
+
 }
 
 
@@ -182,7 +181,14 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    var k = 1
+    var sqr = k * k
+    if (m <= 1) return true
+    while (sqr < m) k++
+    if (sqr <= n) return true
+    else return false
+}
 
 /**
  * Средняя (3 балла)
