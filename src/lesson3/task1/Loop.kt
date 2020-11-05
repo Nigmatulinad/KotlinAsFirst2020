@@ -235,8 +235,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     val m = n % 10
     var k = n / 10
     while (k != 10) {
-        if (m == k % 10) ans = false
-        else ans = true
+        ans = if (m == k % 10) false else true
         k /= 10
     }
     return ans

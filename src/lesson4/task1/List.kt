@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.digitNumber
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -183,7 +184,7 @@ fun polynom(p: List<Int>, x: Int): Int {
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
     if (list.isEmpty()) return list
     var sum = list[0]
-    for (i in 1 until list.size){
+    for (i in 1 until list.size) {
         list[i] += sum
         sum = list[i]
     }
@@ -273,7 +274,6 @@ fun convertToString(n: Int, base: Int): String = TODO()
  */
 fun decimal(digits: List<Int>, base: Int): Int {
     var ans = digits.last()
-    var counter = 0
     var sepung = base
     if (digits.size == 1) return digits[0]
     for (i in 1 until digits.size - 1) sepung *= base
@@ -306,7 +306,45 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var ans: String = ""
+    var number: String = ""
+    var m = n
+    while (m > 0) {
+        number = when (m > 0) {
+            m >= 1000 -> "M"
+            m >= 900 -> "CM"
+            m >= 500 -> "D"
+            m >= 400 -> "CD"
+            m >= 100 -> "C"
+            m >= 90 -> "XC"
+            m >= 50 -> "L"
+            m >= 40 -> "XL"
+            m >= 10 -> "X"
+            m >= 9 -> "IX"
+            m >= 5 -> "V"
+            m >= 4 -> "IV"
+            else -> "I"
+        }
+        ans += number
+        when (m > 0) {
+            m >= 1000 -> m -= 1000
+            m >= 900 -> m -= 900
+            m >= 500 -> m -= 500
+            m >= 400 -> m -= 400
+            m >= 100 -> m -= 100
+            m >= 90 -> m -= 90
+            m >= 50 -> m -= 50
+            m >= 40 -> m -= 40
+            m >= 10 -> m -= 10
+            m >= 9 -> m -= 9
+            m >= 5 -> m -= 5
+            m >= 4 -> m -= 4
+            else -> m -= 1
+        }
+    }
+    return ans
+}
 
 /**
  * Очень сложная (7 баллов)
@@ -315,4 +353,85 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String = TODO(
+
+)/*{
+    val units = mapOf(
+        1 to "один",
+        2 to "два",
+        3 to "три",
+        4 to "четыре",
+        5 to "пять",
+        6 to "шесть",
+        7 to "семь",
+        8 to "восемь",
+        9 to "девять",
+        10 to "десять",
+        11 to "одиннадцать",
+        12 to "двенадцать",
+        13 to "тринадцать",
+        14 to "четырнадцать",
+        15 to "пятнадцать",
+        16 to "шестнадцать",
+        17 to "семнадцать",
+        18 to "восемнадцать",
+        19 to "девятнадцать"
+    )
+    val unitsForThousands = mapOf(
+        1 to "одна",
+        2 to "две",
+        3 to "три",
+        4 to "четыре",
+        5 to "пять",
+        6 to "шесть",
+        7 to "семь",
+        8 to "восемь",
+        9 to "девять",
+        10 to "десять",
+        11 to "одиннадцать",
+        12 to "двенадцать",
+        13 to "тринадцать",
+        14 to "четырнадцать",
+        15 to "пятнадцать",
+        16 to "шестнадцать",
+        17 to "семнадцать",
+        18 to "восемнадцать",
+        19 to "девятнадцать"
+    )
+    val decides = mapOf(
+        2 to "двадцать",
+        3 to "тридцать",
+        4 to "сорок",
+        5 to "пятьдесят",
+        6 to "шестьдесят",
+        7 to "семьдесят",
+        8 to "восемьдесят",
+        9 to "девяносто",
+    )
+    val hundreds = mapOf(
+        1 to "сто",
+        2 to "двести",
+        3 to "триста",
+        4 to "четыреста",
+        5 to "пятьсот",
+        6 to "шестьсот",
+        7 to "семьсот",
+        8 to "восемьсот",
+        9 to "девятьсот",
+    )
+    var ans: String = ""
+    var thousand: String = ""
+    var first = n / 1000
+    val last = n % 1000
+    if (first != 0) {
+
+        thousand = when (first % 10) {
+            1 -> "тысяча"
+            in 2..4 -> "тысячи"
+            else -> "тысяч"
+        }
+    }
+    return ans
+}
+
+
