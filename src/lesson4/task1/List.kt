@@ -4,6 +4,8 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson3.task1.digitNumber
+import lesson3.task1.revert
+import javax.lang.model.element.NestingKind
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -263,7 +265,35 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    val convert = mapOf<Int, String>(
+        1 to "1", 2 to "2",
+        3 to "3", 4 to "4",
+        5 to "5", 6 to "6",
+        7 to "7", 8 to "8",
+        9 to "9", 10 to "A",
+        11 to "B", 13 to "C",
+        14 to "D", 15 to "E",
+        16 to "F", 17 to "G",
+        18 to "H", 19 to "I",
+        20 to "J", 21 to "K",
+        22 to "L", 23 to "M",
+        24 to "N", 25 to "O",
+        26 to "P", 27 to "Q",
+        28 to "R", 29 to "S",
+        30 to "T", 31 to "U",
+        32 to "V", 33 to "W",
+        34 to "X", 35 to "Y",
+        36 to "Z",)
+    var ans: String = ""
+    var digit = n
+    while (digit != 0) {
+        ans += convert[digit % base]
+        digit /= base
+    }
+
+    return ans
+}
 
 /**
  * Средняя (3 балла)
@@ -353,85 +383,51 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO(
-
-)/*{
-    val units = mapOf(
-        1 to "один",
-        2 to "два",
-        3 to "три",
-        4 to "четыре",
-        5 to "пять",
-        6 to "шесть",
-        7 to "семь",
-        8 to "восемь",
-        9 to "девять",
-        10 to "десять",
-        11 to "одиннадцать",
-        12 to "двенадцать",
-        13 to "тринадцать",
-        14 to "четырнадцать",
-        15 to "пятнадцать",
-        16 to "шестнадцать",
-        17 to "семнадцать",
-        18 to "восемнадцать",
-        19 to "девятнадцать"
+fun russian(n: Int): String {
+    val units = listOf(
+        "", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
+        "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
+        "восемнадцать", "девятнадцать"
     )
-    val unitsForThousands = mapOf(
-        1 to "одна",
-        2 to "две",
-        3 to "три",
-        4 to "четыре",
-        5 to "пять",
-        6 to "шесть",
-        7 to "семь",
-        8 to "восемь",
-        9 to "девять",
-        10 to "десять",
-        11 to "одиннадцать",
-        12 to "двенадцать",
-        13 to "тринадцать",
-        14 to "четырнадцать",
-        15 to "пятнадцать",
-        16 to "шестнадцать",
-        17 to "семнадцать",
-        18 to "восемнадцать",
-        19 to "девятнадцать"
+    val unitsForThousands = listOf(
+        "", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять", "десять", "одиннадцать",
+        "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
+        "восемнадцать", "девятнадцать"
     )
-    val decides = mapOf(
-        2 to "двадцать",
-        3 to "тридцать",
-        4 to "сорок",
-        5 to "пятьдесят",
-        6 to "шестьдесят",
-        7 to "семьдесят",
-        8 to "восемьдесят",
-        9 to "девяносто",
+    val decides = listOf(
+        "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто",
     )
-    val hundreds = mapOf(
-        1 to "сто",
-        2 to "двести",
-        3 to "триста",
-        4 to "четыреста",
-        5 to "пятьсот",
-        6 to "шестьсот",
-        7 to "семьсот",
-        8 to "восемьсот",
-        9 to "девятьсот",
+    val hundreds = listOf(
+        "", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот",
     )
-    var ans: String = ""
+    var russian: String = ""
     var thousand: String = ""
     var first = n / 1000
-    val last = n % 1000
+    var last = n % 1000
     if (first != 0) {
-
-        thousand = when (first % 10) {
+        if (first % 100 in 10..19) thousand = "тысяч"
+        else thousand = when (first % 10) {
             1 -> "тысяча"
             in 2..4 -> "тысячи"
             else -> "тысяч"
         }
     }
-    return ans
+    if (first > 100) {
+        russian += hundreds[first / 100]
+        first %= 100
+    }
+    if (first in 10..19){
+        russian += unitsForThousands[first] + thousand
+        first = 0
+    } else russian += decides[first / 10] + unitsForThousands[first % 10] + thousand
+    if (last > 100) {
+        russian += hundreds[last / 100]
+        first %= 100
+    }
+    if (last in 10..19){
+        russian += units[last]
+        last = 0
+    } else russian += decides[last / 10] + units[last % 10]
+    return russian
 }
-
 
