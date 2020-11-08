@@ -131,8 +131,8 @@ fun abs(v: List<Double>): Double = TODO()
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-    if (list.isEmpty()) return 0.0
-    else return list.sum() / list.size
+    return if (list.isEmpty()) 0.0
+    else list.sum() / list.size
 }
 
 /**
@@ -265,35 +265,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String {
-    val convert = mapOf<Int, String>(
-        1 to "1", 2 to "2",
-        3 to "3", 4 to "4",
-        5 to "5", 6 to "6",
-        7 to "7", 8 to "8",
-        9 to "9", 10 to "A",
-        11 to "B", 13 to "C",
-        14 to "D", 15 to "E",
-        16 to "F", 17 to "G",
-        18 to "H", 19 to "I",
-        20 to "J", 21 to "K",
-        22 to "L", 23 to "M",
-        24 to "N", 25 to "O",
-        26 to "P", 27 to "Q",
-        28 to "R", 29 to "S",
-        30 to "T", 31 to "U",
-        32 to "V", 33 to "W",
-        34 to "X", 35 to "Y",
-        36 to "Z",)
-    var ans: String = ""
-    var digit = n
-    while (digit != 0) {
-        ans += convert[digit % base]
-        digit /= base
-    }
-
-    return ans
-}
+fun convertToString(n: Int, base: Int): String = TODO()
 
 /**
  * Средняя (3 балла)
@@ -357,20 +329,20 @@ fun roman(n: Int): String {
             else -> "I"
         }
         ans += number
-        when (m > 0) {
-            m >= 1000 -> m -= 1000
-            m >= 900 -> m -= 900
-            m >= 500 -> m -= 500
-            m >= 400 -> m -= 400
-            m >= 100 -> m -= 100
-            m >= 90 -> m -= 90
-            m >= 50 -> m -= 50
-            m >= 40 -> m -= 40
-            m >= 10 -> m -= 10
-            m >= 9 -> m -= 9
-            m >= 5 -> m -= 5
-            m >= 4 -> m -= 4
-            else -> m -= 1
+        m -= when (m > 0) {
+            m >= 1000 -> 1000
+            m >= 900 -> 900
+            m >= 500 -> 500
+            m >= 400 -> 400
+            m >= 100 -> 100
+            m >= 90 -> 90
+            m >= 50 -> 50
+            m >= 40 -> 40
+            m >= 10 -> 10
+            m >= 9 -> 9
+            m >= 5 -> 5
+            m >= 4 -> 4
+            else -> 1
         }
     }
     return ans
@@ -384,50 +356,111 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    val units = listOf(
-        "", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
-        "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
-        "восемнадцать", "девятнадцать"
-    )
-    val unitsForThousands = listOf(
-        "", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять", "десять", "одиннадцать",
-        "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
-        "восемнадцать", "девятнадцать"
-    )
-    val decides = listOf(
-        "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто",
-    )
-    val hundreds = listOf(
-        "", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот",
-    )
-    var russian: String = ""
-    var thousand: String = ""
+    var russian = ""
     var first = n / 1000
     var last = n % 1000
-    if (first != 0) {
-        if (first % 100 in 10..19) thousand = "тысяч"
-        else thousand = when (first % 10) {
-            1 -> "тысяча"
-            in 2..4 -> "тысячи"
-            else -> "тысяч"
+    if (n > 999) {
+        when (first / 100) {
+            0 -> russian += ""
+            1 -> russian += "сто"
+            2 -> russian += "двести"
+            3 -> russian += "триста"
+            4 -> russian += "четыреста"
+            5 -> russian += "пятьсот"
+            6 -> russian += "шестьсот"
+            7 -> russian += "семьсот"
+            8 -> russian += "восемьсот"
+            9 -> russian += "девятьсот"
+        }
+        if (first % 100 != 0 && first / 100 != 0) russian += " "
+        if (first % 100 in 10..19) when (first % 100) {
+            10 -> russian += "десять тысяч"
+            11 -> russian += "одиннадцать тысяч"
+            12 -> russian += "двенадцать тысяч"
+            13 -> russian += "тринадцать  тысяч"
+            14 -> russian += "четырнадцать тысяч"
+            15 -> russian += "пятнадцать тысяч"
+            16 -> russian += "шестнадцать тысяч"
+            17 -> russian += "семнадцать тысяч"
+            18 -> russian += "восемнадцать тысяч"
+            19 -> russian += "девятнадцать тысяч"
+        } else {
+            when ((first / 10) % 10) {
+                0 -> russian += ""
+                2 -> russian += "двадцать"
+                3 -> russian += "тридцать"
+                4 -> russian += "сорок"
+                5 -> russian += "пятьдесят"
+                6 -> russian += "шестьдесят"
+                7 -> russian += "семьдесят"
+                8 -> russian += "восемьдесят"
+                9 -> russian += "девяносто"
+            }
+            if (first % 10 != 0 && first / 10 % 10 != 0) russian += " "
+            when (first % 10) {
+                0 -> russian += " тысяч"
+                1 -> russian += "одна тысяча"
+                2 -> russian += "две тысячи"
+                3 -> russian += "три тысячи"
+                4 -> russian += "четыре тысячи"
+                5 -> russian += "пять тысяч"
+                6 -> russian += "шесть тысяч"
+                7 -> russian += "семь тысяч"
+                8 -> russian += "восемь тысяч"
+                9 -> russian += "девять тысяч"
+            }
+        }
+        if (last != 0) russian += " "
+    }
+    when (last / 100) {
+        0 -> russian += ""
+        1 -> russian += "сто"
+        2 -> russian += "двести"
+        3 -> russian += "триста"
+        4 -> russian += "четыреста"
+        5 -> russian += "пятьсот"
+        6 -> russian += "шестьсот"
+        7 -> russian += "семьсот"
+        8 -> russian += "восемьсот"
+        9 -> russian += "девятьсот"
+    }
+    if (last % 100 != 0 && last / 100 != 0) russian += " "
+    if (last % 100 in 10..19) when (last % 100) {
+        10 -> russian += "десять"
+        11 -> russian += "одиннадцать"
+        12 -> russian += "двенадцать"
+        13 -> russian += "тринадцать"
+        14 -> russian += "четырнадцать"
+        15 -> russian += "пятнадцать"
+        16 -> russian += "шестнадцать"
+        17 -> russian += "семнадцать"
+        18 -> russian += "восемнадцать"
+        19 -> russian += "девятнадцать"
+    } else {
+        when ((last / 10) % 10) {
+            0 -> russian += ""
+            2 -> russian += "двадцать"
+            3 -> russian += "тридцать"
+            4 -> russian += "сорок"
+            5 -> russian += "пятьдесят"
+            6 -> russian += "шестьдесят"
+            7 -> russian += "семьдесят"
+            8 -> russian += "восемьдесят"
+            9 -> russian += "девяносто"
+        }
+        if (last % 10 != 0 && last / 10 % 10 != 0) russian += " "
+        when (last % 10) {
+            0 -> russian += ""
+            1 -> russian += "один"
+            2 -> russian += "два"
+            3 -> russian += "три"
+            4 -> russian += "четыре"
+            5 -> russian += "пять"
+            6 -> russian += "шесть"
+            7 -> russian += "семь"
+            8 -> russian += "восемь"
+            9 -> russian += "девять"
         }
     }
-    if (first > 100) {
-        russian += hundreds[first / 100]
-        first %= 100
-    }
-    if (first in 10..19){
-        russian += unitsForThousands[first] + thousand
-        first = 0
-    } else russian += decides[first / 10] + unitsForThousands[first % 10] + thousand
-    if (last > 100) {
-        russian += hundreds[last / 100]
-        first %= 100
-    }
-    if (last in 10..19){
-        russian += units[last]
-        last = 0
-    } else russian += decides[last / 10] + units[last % 10]
     return russian
 }
-
