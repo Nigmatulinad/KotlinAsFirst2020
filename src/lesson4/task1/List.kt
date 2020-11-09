@@ -130,10 +130,8 @@ fun abs(v: List<Double>): Double = TODO()
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    return if (list.isEmpty()) 0.0
-    else list.sum() / list.size
-}
+fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() / list.size
+
 
 /**
  * Средняя (3 балла)
@@ -309,8 +307,8 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var ans: String = ""
-    var number: String = ""
+    var ans = ""
+    var number = ""
     var m = n
     while (m > 0) {
         number = when (m > 0) {
@@ -357,8 +355,8 @@ fun roman(n: Int): String {
  */
 fun russian(n: Int): String {
     var russian = ""
-    var first = n / 1000
-    var last = n % 1000
+    val first = n / 1000
+    val last = n % 1000
     if (n > 999) {
         when (first / 100) {
             0 -> russian += ""

@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.time.measureTime
 
@@ -79,6 +80,7 @@ fun digitNumber(n: Int): Int {
     while (a > 0) {
         a %= 10
         num++
+        a /= 10
     }
     return num
 }
@@ -89,7 +91,14 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    val fib = mutableListOf<Int>(1, 1, 2)
+    if (n in 0..1) return 1
+    for (i in 2..n){
+        fib.add(i, (fib[i - 1] + fib[i - 2]))
+    }
+    return fib[n - 1]
+}
 
 /**
  * Простая (2 балла)
@@ -217,7 +226,7 @@ fun revert(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun isPalindrome(n: Int): Boolean {
-    var a = revert(n)
+    val a = revert(n)
     return if (a == n) true
     else return false
 }
@@ -305,4 +314,14 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var number = 2
+    var count = 1
+    var a = fib(number)
+    while (count < n) {
+        count += digitNumber(a)
+        number++
+        a = fib(number)
+    }
+    return (fib(--number) / 10.0.pow(count - n).toInt() % 10)
+}
