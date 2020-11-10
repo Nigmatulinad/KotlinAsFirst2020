@@ -143,6 +143,17 @@ fun maxDivisor(n: Int): Int {
  * этого для какого-либо начального X > 0.
  */
 fun collatzSteps(x: Int): Int = TODO()
+fun evk(n: Int, m: Int): Int {
+    var a = n
+    var b = m
+    var ans = 1
+    while (b != 0 && a != 0) {
+        if (a > b) a %= b
+        else b %= a
+        ans = a + b
+    }
+    return ans
+}
 
 /**
  * Средняя (3 балла)
@@ -150,17 +161,7 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    var evk = 1
-    var a = n
-    var b = m
-    while (b != 0 && a != 0) {
-        if (a > b) a %= b
-        else b %= a
-        evk = a + b
-    }
-    return m * n / evk
-}
+fun lcm(m: Int, n: Int): Int = m * n / evk(m, n)
 /**
  * Средняя (3 балла)
  *
@@ -169,17 +170,8 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var evk = 1
-    var a = n
-    var b = m
-    while (b != 0 && a != 0) {
-        if (a > b) a %= b
-        else b %= a
-        evk = a + b
-    }
-    return if (evk == 1) true
-    else false
-
+    val evk = evk(m, n)
+    return evk == 1
 }
 
 
@@ -192,11 +184,10 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var k = 1
-    var sqr = k * k
+    val sqr = k * k
     if (m <= 1) return true
     while (sqr < m) k++
-    if (sqr <= n) return true
-    else return false
+    return sqr <= n
 }
 
 /**
@@ -227,8 +218,7 @@ fun revert(n: Int): Int {
  */
 fun isPalindrome(n: Int): Boolean {
     val a = revert(n)
-    return if (a == n) true
-    else return false
+    return a == n
 }
 
 /**
@@ -244,7 +234,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     val m = n % 10
     var k = n / 10
     while (k != 10) {
-        ans = if (m == k % 10) false else true
+        ans = m != k % 10
         k /= 10
     }
     return ans

@@ -98,7 +98,7 @@ fun timeForHalfWay(
         (halfWay > s1) && (halfWay < (s1 + s2)) -> t1 + (halfWay - s1) / v2
         halfWay == (s1 + s2) -> t1 + t2
         else -> t1 + t2 + (halfWay - s1 - s2) / v3
-}
+    }
 }
 
 /**
@@ -169,9 +169,9 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
     when {
         b < c || d < a -> -1
-        (c < a) && (d < b) -> (d - a)
-        a < c && b < d -> (b - c)
-        c < a && b < d -> b - a
-        a < c && d < b -> d - c
+        a <= c && b <= c -> c - b
+        a <= c && b <= d -> b - c
+        a <= c && d <= b -> d - c
+        c <= a && d <= b -> b - a
         else -> -1
     }
