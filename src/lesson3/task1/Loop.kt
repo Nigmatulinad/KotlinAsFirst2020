@@ -92,9 +92,9 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    val fib = mutableListOf<Int>(1, 1, 2)
+    val fib = mutableListOf(1, 1, 2)
     if (n in 0..1) return 1
-    for (i in 2..n){
+    for (i in 2..n) {
         fib.add(i, (fib[i - 1] + fib[i - 2]))
     }
     return fib[n - 1]

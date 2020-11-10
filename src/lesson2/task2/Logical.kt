@@ -21,8 +21,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
 fun isNumberHappy(number: Int): Boolean {
     val sum1 = number / 100
     val sum2 = number % 100
-    return if (sum1 % 10 + sum1 / 10 == sum2 / 10 + sum2 % 10) true else false
-
+    return sum1 % 10 + sum1 / 10 == sum2 / 10 + sum2 % 10
 }
 
 /**
@@ -64,8 +63,5 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    return if (( a<= s && (b <= r || c <= r)) || (b <= s && (a <= r || c <=r )) || (c <= s && (b <= r || a <= r))) true
-    else false
-
-}
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
+    ((a <= s && (b <= r || c <= r)) || (b <= s && (a <= r || c <= r)) || (c <= s && (b <= r || a <= r)))
