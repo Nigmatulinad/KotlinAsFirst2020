@@ -271,28 +271,7 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {
-    var ans = 0
-    var counter = 0
-    var digitNumber = 0
-    var num = 1
-    var divider = 1
-    while (counter < n) {
-        counter += digitNumber(num * num)
-        num++
-    }
-    counter -= n
-    if (counter == 0) ans = (num * num) % 10
-    else {
-        num = revert(num)
-        while (counter != 0) {
-            divider *= 10
-            counter--
-        }
-        ans = revert((num * num) % divider) % 10
-    }
-    return ans
-}
+fun squareSequenceDigit(n: Int): Int = TODO()
 
 
 /**
