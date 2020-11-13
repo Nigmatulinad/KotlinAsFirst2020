@@ -75,14 +75,13 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var num = 1
-    var a = n
-    while (a > 0) {
-        a %= 10
-        num++
-        a /= 10
-    }
-    return num
+    var ans = 0
+    var k = n
+    do {
+        ans += 1
+        k /= 10
+    } while (k != 0)
+    return ans
 }
 
 /**
@@ -91,14 +90,7 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int {
-    val fib = mutableListOf(1, 1, 2)
-    if (n in 0..1) return 1
-    for (i in 2..n) {
-        fib.add(i, (fib[i - 1] + fib[i - 2]))
-    }
-    return fib[n - 1]
-}
+fun fib(n: Int): Int = if (n <= 2) 1 else fib(n-1) + fib(n - 2)
 
 /**
  * Простая (2 балла)
@@ -106,11 +98,10 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var m = 2
-    while (n % m != 0) {
-        m++
+    for (i in 2..n / 2) {
+        if (n % i == 0) return i
     }
-    return m
+    return n
 }
 
 /**
@@ -119,11 +110,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var divisor = n - 1
-    while (n % divisor != 0) {
-        divisor--
+    for (i in n / 2 downTo 2) {
+        if (n % i == 0) return i
     }
-    return divisor
+    return 1
 }
 
 /**
@@ -183,7 +173,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var k = 1
+    var k = 2
     val sqr = k * k
     if (m <= 1) return true
     while (sqr < m) k++

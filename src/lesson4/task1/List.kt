@@ -183,11 +183,7 @@ fun polynom(p: List<Int>, x: Int): Int {
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
     if (list.isEmpty()) return list
-    var sum = list[0]
-    for (i in 1 until list.size) {
-        list[i] += sum
-        sum = list[i]
-    }
+    for (i in 1 until list.size) list[i] += list[i - 1]
     return list
 }
 
@@ -233,10 +229,10 @@ fun convert(n: Int, base: Int): List<Int> {
     val list = mutableListOf<Int>()
     var number = n
     while (number != 0) {
-        list.add(0, number % base)
+        list += number % base
         number /= base
     }
-    return list
+    return list.reversed()
 }
 
 /**
@@ -250,7 +246,16 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    val digit = convert(n, base)
+    val latin = "abcdefghijklmnopqrstuvwxyz"
+    val ans = StringBuilder()
+    for (el in digit) {
+        if (el < 10) ans.append(el.toString())
+        else ans.append(latin[el - 10].toString())
+    }
+    return ans.toString()
+}
 
 /**
  * Средняя (3 балла)

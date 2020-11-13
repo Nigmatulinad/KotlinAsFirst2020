@@ -114,8 +114,20 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
-
+fun bestLongJump(jumps: String): Int {
+    val parts = jumps.split(" ")
+    var ans = -1
+    for (i in parts) {
+        if ((i != "%") && (i != "-"))
+            try {
+                val n = i.toIntOrNull() ?: return -1
+                ans = kotlin.math.max(ans, n)
+            } catch (e: NumberFormatException) {
+                return -1
+            }
+    }
+    return ans
+}
 /**
  * Сложная (6 баллов)
  *
@@ -128,13 +140,16 @@ fun bestLongJump(jumps: String): Int = TODO()
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    val results = jumps.split(" ").filter { it !in "-%" }
-    try {
-        val result = results.map { it.toInt() }
-        return result.max() ?: -1
-    } catch (e: NumberFormatException) {
-        return -1
+    val correctChars = setOf('+', '%', '-')
+    val parts = jumps.split(' ')
+    if (parts.size % 2 != 0) return -1
+    var best = -1
+    for (i in parts.indices step 2) {
+        val result = parts[i].toIntOrNull() ?: return -1
+        if (!parts[i + 1].all { it in correctChars }) return -1
+        if ('+' in parts[i + 1]) best = kotlin.math.max(best, result)
     }
+    return best
 }
 /**
  * Сложная (6 баллов)
@@ -145,8 +160,23 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
-
+fun plusMinus(expression: String): Int {
+    val list = expression.split(' ')
+    require(list[0] != "")
+    var ans = 0
+    var mark = 1
+    for ((ind, element) in list.withIndex()) {
+        if (ind % 2 == 0) {
+            require(element.all { it in '0'..'9' })
+            ans += element.toInt() * mark
+        } else mark = when (element) {
+            "+" -> 1
+            "-" -> -1
+            else -> throw IllegalArgumentException()
+        }
+    }
+    return ans
+}
 /**
  * Сложная (6 баллов)
  *
