@@ -300,7 +300,7 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  */
 fun roman(n: Int): String {
     var ans = ""
-    var number = ""
+    var number: String
     var m = n
     while (m > 0) {
         number = when (m > 0) {
