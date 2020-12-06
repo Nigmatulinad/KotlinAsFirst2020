@@ -75,8 +75,14 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
-
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val map = mutableMapOf<String, Int>()
+    for (line in File(inputName).readLines()) {
+        val words = Regex("""[^a-zA-zа-яА-ЯёЁ]+""").split(line).map { it.toLowerCase() }.filter { it.isNotEmpty() }
+        for (i in words) map[i] = map.getOrDefault(i, 0) + 1
+    }
+    return map.toList().sortedByDescending { it.second }.take(20).toMap()
+}
 
 /**
  * Средняя (12 баллов)
@@ -91,8 +97,24 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
-fun sibilants(inputName: String, outputName: String) {
-    TODO()
+fun sibilants(inputName: String, outputName: String){
+    val first = setOf('ж', 'ч', 'ш', 'щ')
+    val wrong = mapOf('ы' to "и", 'я' to "а", 'ю' to "у")
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) {
+            it.write(line[0].toString())
+            for (i in 1 until line.length)
+                if ((line[i - 1].toLowerCase() in first) && (line[i].toLowerCase() in wrong))
+                    it.write(
+                        wrong.getOrDefault(
+                            line[i],
+                            wrong.getOrDefault(line[i].toLowerCase(), "").toUpperCase()
+                        )
+                    )
+                else it.write(line[i].toString())
+            it.newLine()
+        }
+    }
 }
 
 /**

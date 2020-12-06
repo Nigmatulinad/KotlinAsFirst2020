@@ -74,6 +74,7 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
+@Throws(Throwable::class)
 fun dateStrToDigit(str: String): String = TODO()
 
 /**
@@ -102,7 +103,9 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String  =
+    if (!Regex("""^(\+\d+)?(\(\d+\))?\d+$""").matches(Regex("""[\s-]""").replace(phone, "")))
+        "" else Regex("""[\s-()]""").replace(phone, "")
 
 /**
  * Средняя (5 баллов)
@@ -128,6 +131,7 @@ fun bestLongJump(jumps: String): Int {
     }
     return ans
 }
+
 /**
  * Сложная (6 баллов)
  *
@@ -151,6 +155,7 @@ fun bestHighJump(jumps: String): Int {
     }
     return best
 }
+
 /**
  * Сложная (6 баллов)
  *
@@ -177,6 +182,7 @@ fun plusMinus(expression: String): Int {
     }
     return ans
 }
+
 /**
  * Сложная (6 баллов)
  *

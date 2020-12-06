@@ -174,7 +174,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var k = 2
-    val sqr = k * k
+    var sqr = k * k
     if (m <= 1) return true
     while (sqr < m) k++
     return sqr <= n
@@ -223,7 +223,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     var ans = false
     val m = n % 10
     var k = n / 10
-    while (k != 10) {
+    while (k != 0) {
         ans = m != k % 10
         k /= 10
     }
