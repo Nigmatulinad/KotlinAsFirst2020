@@ -103,7 +103,7 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String  =
+fun flattenPhoneNumber(phone: String): String =
     if (!Regex("""^(\+\d+)?(\(\d+\))?\d+$""").matches(Regex("""[\s-]""").replace(phone, "")))
         "" else Regex("""[\s-()]""").replace(phone, "")
 
@@ -205,7 +205,22 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    var cost = -1.0
+    var res = ""
+    val list = description.split("; ")
+    for (i in list) {
+        val parts = i.split(' ')
+        if (parts.size != 2) return ""
+        val num = parts[1].toDoubleOrNull()
+        if ((num == null) || (num < 0.0)) return ""
+        if (num > cost) {
+            cost = num
+            res = parts[0]
+        }
+    }
+    return res
+}
 
 /**
  * Сложная (6 баллов)
@@ -257,3 +272,5 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+

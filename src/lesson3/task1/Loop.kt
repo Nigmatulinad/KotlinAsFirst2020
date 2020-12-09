@@ -90,7 +90,11 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = if (n <= 2) 1 else fib(n-1) + fib(n - 2)
+fun fib(n: Int): Int {
+    val ans = mutableListOf<Int>(1, 1)
+    if (n > 1) for (i in 2 until n) ans[n] = ans[n - 1] + ans[n - 2]
+    return ans[n]
+}
 
 /**
  * Простая (2 балла)
@@ -174,10 +178,9 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var k = 2
-    var sqr = k * k
     if (m <= 1) return true
-    while (sqr < m) k++
-    return sqr <= n
+    while (k * k < m) k++
+    return (k * k) <= n
 }
 
 /**

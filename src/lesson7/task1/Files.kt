@@ -97,7 +97,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
-fun sibilants(inputName: String, outputName: String){
+fun sibilants(inputName: String, outputName: String) {
     val first = setOf('ж', 'ч', 'ш', 'щ')
     val wrong = mapOf('ы' to "и", 'я' to "а", 'ю' to "у")
     File(outputName).bufferedWriter().use {
@@ -135,7 +135,22 @@ fun sibilants(inputName: String, outputName: String){
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val text = mutableListOf<String>()
+    var maxLenth = 0
+    for (line in File(inputName).readLines()) {
+        val newLine = line.trim()
+        text.add(newLine)
+        maxLenth = kotlin.math.max(maxLenth, newLine.length)
+
+    }
+    File(outputName).bufferedWriter().use {
+        for (line in text) {
+            val currentLen = line.length
+            val res = String.format("%${(maxLenth + currentLen) / 2}s", line) + "\n"
+            it.write(res)
+            print(res)
+        }
+    }
 }
 
 /**
@@ -227,7 +242,34 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    TODO()
+    val text = mutableListOf<List<String>>()
+    val lenghtLines = mutableListOf<Int>()
+    var maxLength = 0
+    for (line in File(inputName).readLines()) {
+        val res = line.trim().split(" ").filter { it != "" }
+        var lengthWords = res.fold(0) { preview, it -> preview + it.length }
+        if (lengthWords != 0) lengthWords += (res.size - 1)
+        lenghtLines.add(lengthWords)
+        maxLength = kotlin.math.max(maxLength, lengthWords)
+        if (res.isEmpty()) text.add(listOf("")) else text.add(res)
+    }
+    File(outputName).bufferedWriter().use {
+        for ((index, line) in text.withIndex()) {
+            if (line.size == 1) {
+                it.write(line[0] + "\n")
+                continue
+            }
+            val dif = maxLength - lenghtLines[index]
+            val countPosSpaces = line.size - 1
+            val divSpaces = dif / countPosSpaces
+            var modSpaces = dif % countPosSpaces
+            for (i in 0..line.size - 2) {
+                it.write(line[i] + " ".repeat(divSpaces + 1 + if (modSpaces > 0) 1 else 0))
+                modSpaces--
+            }
+            it.write(line.last() + "\n")
+        }
+    }
 }
 
 /**
