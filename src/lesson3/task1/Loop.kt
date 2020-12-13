@@ -92,7 +92,7 @@ fun digitNumber(n: Int): Int {
  */
 fun fib(n: Int): Int {
     val ans = mutableListOf<Int>(1, 1)
-    if (n > 1) for (i in 2 until n) ans[n] = ans[n - 1] + ans[n - 2]
+    if (n > 1) ans[n] += ans[n - 1] + ans[n - 2]
     return ans[n]
 }
 

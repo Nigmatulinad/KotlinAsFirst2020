@@ -136,17 +136,17 @@ fun sibilants(inputName: String, outputName: String) {
  */
 fun centerFile(inputName: String, outputName: String) {
     val text = mutableListOf<String>()
-    var maxLenth = 0
+    var maxLength = 0
     for (line in File(inputName).readLines()) {
         val newLine = line.trim()
         text.add(newLine)
-        maxLenth = kotlin.math.max(maxLenth, newLine.length)
+        maxLength = kotlin.math.max(maxLength, newLine.length)
 
     }
     File(outputName).bufferedWriter().use {
         for (line in text) {
             val currentLen = line.length
-            val res = String.format("%${(maxLenth + currentLen) / 2}s", line) + "\n"
+            val res = String.format("%${(maxLength + currentLen) / 2}s", line) + "\n"
             it.write(res)
             print(res)
         }
@@ -204,7 +204,14 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    val res = mutableMapOf<String, Int>()
+    for (line in File(inputName).readLines()) {
+        val words = Regex("""[^a-zA-zа-яА-ЯёЁ]+""").split(line).map { it.toLowerCase() }.filter { it.isNotEmpty() }
+        for (i in words) res[i] = res.getOrDefault(i, 0) + 1
+    }
+    return res.toList().sortedByDescending { it.second }.take(20).toMap()
+}
 
 /**
  * Средняя (14 баллов)
@@ -242,36 +249,15 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    val text = mutableListOf<List<String>>()
-    val lenghtLines = mutableListOf<Int>()
-    var maxLength = 0
-    for (line in File(inputName).readLines()) {
-        val res = line.trim().split(" ").filter { it != "" }
-        var lengthWords = res.fold(0) { preview, it -> preview + it.length }
-        if (lengthWords != 0) lengthWords += (res.size - 1)
-        lenghtLines.add(lengthWords)
-        maxLength = kotlin.math.max(maxLength, lengthWords)
-        if (res.isEmpty()) text.add(listOf("")) else text.add(res)
-    }
+    val newDictionary = mutableMapOf<Char, String>()
+    for ((key, value) in dictionary) newDictionary[key.toLowerCase()] = value.toLowerCase()
     File(outputName).bufferedWriter().use {
-        for ((index, line) in text.withIndex()) {
-            if (line.size == 1) {
-                it.write(line[0] + "\n")
-                continue
-            }
-            val dif = maxLength - lenghtLines[index]
-            val countPosSpaces = line.size - 1
-            val divSpaces = dif / countPosSpaces
-            var modSpaces = dif % countPosSpaces
-            for (i in 0..line.size - 2) {
-                it.write(line[i] + " ".repeat(divSpaces + 1 + if (modSpaces > 0) 1 else 0))
-                modSpaces--
-            }
-            it.write(line.last() + "\n")
+        for (char in File(inputName).readText()) {
+            val changeString = newDictionary[char.toLowerCase()] ?: char.toString()
+            it.write(if (char.isUpperCase()) changeString.capitalize() else changeString)
         }
     }
 }
-
 /**
  * Средняя (12 баллов)
  *
