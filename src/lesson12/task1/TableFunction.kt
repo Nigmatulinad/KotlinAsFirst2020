@@ -64,4 +64,6 @@ class TableFunction {
      * и любая пара из второй таблицы входит также и в первую
      */
     override fun equals(other: Any?): Boolean = TODO()
+
+    override fun hashCode(): Int = javaClass.hashCode()
 }

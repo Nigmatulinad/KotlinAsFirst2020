@@ -75,7 +75,20 @@ fun main() {
  * входными данными.
  */
 @Throws(Throwable::class)
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val list = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября",
+        "ноября", "декабля")
+    val parts = str.split(" ")
+    if (parts.size != 3 || parts[0].toInt() !in 0..31 || list.indexOf(parts[1]) == -1) return ""
+    else {
+        val day = parts[0].toInt()
+        val month = list.indexOf(parts[1]) + 1
+        val year = parts[2].toInt()
+        val short = setOf<Int>(4, 6, 7, 9, 11)
+        return if ((month !in short && day > 30) || (month == 2 && day > 28)) ""
+        else String.format("%02d.%02d.%02d", day, month, year)
+    }
+}
 
 /**
  * Средняя (4 балла)

@@ -11,17 +11,21 @@ package lesson11.task1
  *
  * Аргументы конструктора -- вещественная и мнимая часть числа.
  */
+@Suppress("UNREACHABLE_CODE")
 class Complex(val re: Double, val im: Double) {
 
     /**
      * Конструктор из вещественного числа
      */
-    constructor(x: Double) : this(TODO(), TODO())
+    constructor(x: Double) : this(x, 0.0)
+
 
     /**
      * Конструктор из строки вида x+yi
      */
-    constructor(s: String) : this(TODO(), TODO())
+    constructor(s: String) : this(
+        TODO(), TODO()
+    )
 
     /**
      * Сложение.
@@ -56,5 +60,11 @@ class Complex(val re: Double, val im: Double) {
     /**
      * Преобразование в строку
      */
-    override fun toString(): String = TODO()
+    fun toString(a: Complex): String = TODO()
+
+    override fun hashCode(): Int {
+        var result = re.hashCode()
+        result = 31 * result + im.hashCode()
+        return result
+    }
 }

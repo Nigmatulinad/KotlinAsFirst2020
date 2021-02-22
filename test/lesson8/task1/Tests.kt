@@ -239,20 +239,4 @@ class Tests {
         val expected = Circle(Point(0.0, 0.0), 5.0)
         assertApproxEquals(expected, actual, 1e-5)
     }
-
-    @Test
-    @Tag("10")
-    fun minContainingCircle() {
-        val p1 = Point(0.0, 0.0)
-        val p2 = Point(1.0, 4.0)
-        val p3 = Point(-2.0, 2.0)
-        val p4 = Point(3.0, -1.0)
-        val p5 = Point(-3.0, -2.0)
-        val p6 = Point(0.0, 5.0)
-        val result = minContainingCircle(p1, p2, p3, p4, p5, p6)
-        assertEquals(4.0, result.radius, 0.02)
-        for (p in listOf(p1, p2, p3, p4, p5, p6)) {
-            assertTrue(result.contains(p))
-        }
-    }
 }
