@@ -55,7 +55,7 @@ class TableFunction {
     /**
      * Вернуть коллекцию из всех пар в таблице
      */
-    fun getPairs(): Collection<Pair<Double, Double>> = TODO()
+    fun getPairs(): Collection<Pair<Double, Double>> = table.toList()
 
     /**
      * Вернуть пару, ближайшую к заданному x.
@@ -63,16 +63,26 @@ class TableFunction {
      * Если таблица пуста, бросить IllegalStateException.
      */
     fun findPair(x: Double): Pair<Double, Double>? {
+        if (table.isEmpty()) throw IllegalStateException()
         var difference = MAX_VALUE
         var actual = MIN_VALUE
-        if (table.isEmpty()) throw IllegalStateException()
-        else for ((arg) in table) {
+        for ((arg) in table) {
             if (abs(x - arg) <= difference) {
                 difference = abs(x - arg)
                 if (actual < arg) actual = arg
             }
         }
         return actual to table[actual]!!
+    }
+
+    private fun closest(list: List<Double>, x: Double): Pair<Double, Double> {
+        var min = MAX_VALUE
+        var max = MIN_VALUE
+        for (i in list.indices) {
+            if (list[i] < x && abs(list[i] - x) < min) min = list[i]
+            if (list[i] > x && abs(list[i] - x) < max) max = list[i]
+        }
+        return min to max
     }
 
     /**
@@ -83,13 +93,42 @@ class TableFunction {
      * Если существуют две пары, такие, что x1 < x < x2, использовать интерполяцию.
      * Если их нет, но существуют две пары, такие, что x1 < x2 < x или x > x2 > x1, использовать экстраполяцию.
      */
-    fun getValue(x: Double): Double = TODO()
+    fun getValue(x: Double): Double {
+        val list = table.toList()
+        when {
+            (table.isEmpty()) -> throw IllegalStateException()
+            (table.containsKey(x)) -> return table[x]!!
+            (table.size == 1) -> return list[0].second
+        }
+        val args = mutableListOf<Double>()
+        var more = 0
+        var less = 0
+        for ((first) in list) args + first
+        args.sortedBy { MAX_VALUE }
+        for ((el) in list) {
+            if (el > x) more++
+            else less++
+        }
+        val x1 = closest(args, x).first
+        val x2 = closest(args, x).second
+        return when {
+            less == 0 -> table[x2]!! + (x - x1) * (table[x2]!! - table[x1]!!) / (x2 - x1)
+
+            more == 0 -> table[x1]!! + (x - x2) * (table[x1]!! - table[x2]!!) / (x1 - x2)
+
+            else -> table[x1]!! + (x - x1) * (table[x2]!! - table[x1]!!) / (x1 - x2)
+        }
+    }
 
     /**
      * Таблицы равны, если в них одинаковое количество пар,
      * и любая пара из второй таблицы входит также и в первую
      */
-    override fun equals(other: Any?): Boolean = TODO()
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is TableFunction) return false
+        return this.table.hashCode() == other.table.hashCode()
+    }
 
     override fun hashCode(): Int = javaClass.hashCode()
 }

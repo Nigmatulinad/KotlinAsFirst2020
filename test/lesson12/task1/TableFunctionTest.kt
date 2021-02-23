@@ -1,9 +1,8 @@
 package lesson12.task1
 
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 
 internal class TableFunctionTest {
 
@@ -56,7 +55,7 @@ internal class TableFunctionTest {
         val function = TableFunction()
         try {
             function.getValue(0.0)
-        } catch (ex: IllegalArgumentException) {
+        } catch (ex: IllegalStateException) {
             // pass
         } catch (ex: NotImplementedError) {
             throw ex
