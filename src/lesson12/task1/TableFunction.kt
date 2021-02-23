@@ -75,7 +75,7 @@ class TableFunction {
         return actual to table[actual]!!
     }
 
-    private fun closest(list: List<Double>, x: Double): Pair<Double, Double> {
+    fun closest(list: List<Double>, x: Double): Pair<Double, Double> {
         var min = MAX_VALUE
         var max = MIN_VALUE
         for (i in list.indices) {
@@ -112,9 +112,10 @@ class TableFunction {
         val x1 = closest(args, x).first
         val x2 = closest(args, x).second
         return when {
-            less == 0 -> table[x2]!! + (x - x1) * (table[x2]!! - table[x1]!!) / (x2 - x1)
+            less == 0 ->
+                table[x2]!! + (x - args[args.size - 2]) * (table[args[args.size - 1]]!! - table[args[args.size - 2]]!!) / (args[args.size - 2] - args[args.size - 1])
 
-            more == 0 -> table[x1]!! + (x - x2) * (table[x1]!! - table[x2]!!) / (x1 - x2)
+            more == 0 -> table[args[0]]!! + (x - args[1]) * (table[args[0]]!! - table[args[1]]!!) / (args[0] - args[1])
 
             else -> table[x1]!! + (x - x1) * (table[x2]!! - table[x1]!!) / (x1 - x2)
         }
