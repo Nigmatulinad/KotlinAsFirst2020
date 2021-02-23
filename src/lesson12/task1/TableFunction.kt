@@ -104,7 +104,7 @@ class TableFunction {
         var more = 0
         var less = 0
         for ((first) in list) args + first
-        args.sortedBy { MAX_VALUE }
+        args.sortedBy { it }
         for ((el) in list) {
             if (el > x) more++
             else less++
