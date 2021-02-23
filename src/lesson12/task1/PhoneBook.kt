@@ -106,7 +106,7 @@ class PhoneBook {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is PhoneBook) return false
-        return this.book == other.book
+        return this.book.hashCode() == other.book.hashCode()
     }
 
     override fun hashCode(): Int = book.hashCode()

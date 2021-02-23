@@ -2,6 +2,10 @@
 
 package lesson12.task1
 
+import java.lang.Double.MAX_VALUE
+import java.lang.Double.MIN_VALUE
+import kotlin.math.abs
+
 /**
  * Класс "табличная функция".
  *
@@ -14,11 +18,12 @@ package lesson12.task1
  * Класс должен иметь конструктор по умолчанию (без параметров).
  */
 class TableFunction {
+    private val table = mutableMapOf<Double, Double>()
 
     /**
      * Количество пар в таблице
      */
-    val size: Int get() = TODO()
+    val size: Int get() = table.size
 
     /**
      * Добавить новую пару.
@@ -26,7 +31,13 @@ class TableFunction {
      * или false, если она уже есть (в этом случае перезаписать значение y)
      */
     fun add(x: Double, y: Double): Boolean {
-        TODO()
+        return if (table.containsKey(x)) {
+            table + (x to y)
+            true
+        } else {
+            table[x] = y
+            false
+        }
     }
 
     /**
@@ -34,7 +45,11 @@ class TableFunction {
      * Вернуть true, если пара была удалена.
      */
     fun remove(x: Double): Boolean {
-        TODO()
+        return if (!table.containsKey(x)) false
+        else {
+            table.remove(x)
+            true
+        }
     }
 
     /**
@@ -47,7 +62,18 @@ class TableFunction {
      * Если существует две ближайшие пары, вернуть пару с меньшим значением x.
      * Если таблица пуста, бросить IllegalStateException.
      */
-    fun findPair(x: Double): Pair<Double, Double>? = TODO()
+    fun findPair(x: Double): Pair<Double, Double>? {
+        var difference = MAX_VALUE
+        var actual = MIN_VALUE
+        if (table.isEmpty()) throw IllegalStateException()
+        else for ((arg) in table) {
+            if (abs(x - arg) <= difference) {
+                difference = abs(x - arg)
+                if (actual < arg) actual = arg
+            }
+        }
+        return actual to table[actual]!!
+    }
 
     /**
      * Вернуть значение y по заданному x.
