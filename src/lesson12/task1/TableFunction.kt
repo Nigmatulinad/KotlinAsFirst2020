@@ -31,7 +31,7 @@ class TableFunction {
      * или false, если она уже есть (в этом случае перезаписать значение y)
      */
     fun add(x: Double, y: Double): Boolean {
-        return if (table.containsKey(x)) {
+        return if (!table.containsKey(x)) {
             table + (x to y)
             true
         } else {
@@ -77,7 +77,7 @@ class TableFunction {
 
     fun closest(list: List<Double>, x: Double): Pair<Double, Double> {
         var min = MAX_VALUE
-        var max = MIN_VALUE
+        var max = MAX_VALUE
         for (i in list.indices) {
             if (list[i] < x && abs(list[i] - x) < min) min = list[i]
             if (list[i] > x && abs(list[i] - x) < max) max = list[i]
@@ -103,7 +103,7 @@ class TableFunction {
         val args = mutableListOf<Double>()
         var more = 0
         var less = 0
-        for ((first) in list) args + first
+        for ((arg) in list) args + arg
         args.sortedBy { it }
         for ((el) in list) {
             if (el > x) more++
