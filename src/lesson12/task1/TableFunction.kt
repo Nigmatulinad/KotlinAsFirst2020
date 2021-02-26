@@ -32,7 +32,7 @@ class TableFunction {
      */
     fun add(x: Double, y: Double): Boolean {
         return if (!table.containsKey(x)) {
-            table + (x to y)
+            table += (x to y)
             true
         } else {
             table[x] = y
@@ -75,14 +75,19 @@ class TableFunction {
         return actual to table[actual]!!
     }
 
-    fun closest(list: List<Double>, x: Double): Pair<Double, Double> {
-        var min = MAX_VALUE
-        var max = MAX_VALUE
-        for (i in list.indices) {
-            if (list[i] < x && abs(list[i] - x) < min) min = list[i]
-            if (list[i] > x && abs(list[i] - x) < max) max = list[i]
+
+    private fun find(list: List<Pair<Double, Double>>, x: Double): Pair<Pair<Double, Double>, Pair<Double, Double>> {
+        list.sortedBy { it.first }
+        if (table.isEmpty()) throw IllegalStateException()
+        var ans = (0.0 to 0.0) to (0.0 to 0.0)
+        for (i in 1 until list.size) {
+            if (x < list[0].first || list.last().first < x) throw IllegalArgumentException()
+            if (x < list[i].first) {
+                ans = list[i - 1] to list[i]
+                break
+            }
         }
-        return min to max
+        return ans
     }
 
     /**
@@ -94,30 +99,24 @@ class TableFunction {
      * Если их нет, но существуют две пары, такие, что x1 < x2 < x или x > x2 > x1, использовать экстраполяцию.
      */
     fun getValue(x: Double): Double {
-        val list = table.toList()
+        val list = table.toList().toMutableList()
         when {
             (table.isEmpty()) -> throw IllegalStateException()
             (table.containsKey(x)) -> return table[x]!!
             (table.size == 1) -> return list[0].second
         }
-        val args = mutableListOf<Double>()
-        var more = 0
-        var less = 0
-        for ((arg) in list) args + arg
-        args.sortedBy { it }
-        for ((el) in list) {
-            if (el > x) more++
-            else less++
-        }
-        val x1 = closest(args, x).first
-        val x2 = closest(args, x).second
+        list.sortBy { it.first }
+        // сравнить с крайними
         return when {
-            more == 0 -> table[args[0]]!! + (x - args[1]) * (table[args[0]]!! - table[args[1]]!!) / (args[0] - args[1])
-            less == 0 -> {
-                args.reverse()
-                table[args[0]]!! + (x - args[0]) * (table[args[1]]!! - table[args[0]]!!) / (args[1] - args[0])
+            x < list[0].first -> list[1].second + (x - list[1].first) * (list[0].first - list[1].first) / (list[0].first - list[1].first)
+            x > list.last().first -> {
+                list.reverse()
+                list[1].second + (x - list[1].first) * (list[0].first - list[1].first) / (list[0].first - list[1].first)
             }
-            else -> table[x1]!! + (x - x1) * (table[x2]!! - table[x1]!!) / (x1 - x2)
+            else -> {
+                val (x1, x2) = find(list, x)
+                x1.second + (x - x2.first) * (x1.second - x2.second) / (x2.first - x1.first)
+            }
         }
     }
 
