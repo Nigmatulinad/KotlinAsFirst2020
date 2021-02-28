@@ -18,7 +18,7 @@ import kotlin.math.abs
  * Класс должен иметь конструктор по умолчанию (без параметров).
  */
 class TableFunction {
-    private val table = mutableMapOf<Double, Double>()
+    private val table = mutableMapOf<Double, Double>().toSortedMap()
 
     /**
      * Количество пар в таблице
@@ -64,6 +64,7 @@ class TableFunction {
      */
     fun findPair(x: Double): Pair<Double, Double>? {
         if (table.isEmpty()) throw IllegalStateException()
+        if (table.containsKey(x)) return x to table[x]!!
         var difference = MAX_VALUE
         var actual = MIN_VALUE
         for ((arg) in table) {
@@ -77,11 +78,9 @@ class TableFunction {
 
 
     private fun find(list: List<Pair<Double, Double>>, x: Double): Pair<Pair<Double, Double>, Pair<Double, Double>> {
-        list.sortedBy { it.first }
         if (table.isEmpty()) throw IllegalStateException()
         var ans = (0.0 to 0.0) to (0.0 to 0.0)
         for (i in 1 until list.size) {
-            if (x < list[0].first || list.last().first < x) throw IllegalArgumentException()
             if (x < list[i].first) {
                 ans = list[i - 1] to list[i]
                 break
@@ -105,8 +104,6 @@ class TableFunction {
             (table.containsKey(x)) -> return table[x]!!
             (table.size == 1) -> return list[0].second
         }
-        list.sortBy { it.first }
-        // сравнить с крайними
         return when {
             x < list[0].first -> list[1].second + (x - list[1].first) * (list[0].first - list[1].first) / (list[0].first - list[1].first)
             x > list.last().first -> {
@@ -127,8 +124,8 @@ class TableFunction {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is TableFunction) return false
-        return this.table.hashCode() == other.table.hashCode()
+        return this.table == other.table
     }
 
-    override fun hashCode(): Int = javaClass.hashCode()
+    override fun hashCode(): Int = table.hashCode()
 }
