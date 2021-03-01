@@ -44,13 +44,12 @@ class TableFunction {
      * Удалить пару с заданным значением x.
      * Вернуть true, если пара была удалена.
      */
-    fun remove(x: Double): Boolean {
-        return if (!table.containsKey(x)) false
-        else {
-            table.remove(x)
-            true
-        }
+    fun remove(x: Double): Boolean = if (!table.containsKey(x)) false
+    else {
+        table.remove(x)
+        true
     }
+
 
     /**
      * Вернуть коллекцию из всех пар в таблице
@@ -75,7 +74,6 @@ class TableFunction {
         }
         return actual to table[actual]!!
     }
-
 
     private fun find(list: List<Pair<Double, Double>>, x: Double): Pair<Pair<Double, Double>, Pair<Double, Double>> {
         if (table.isEmpty()) throw IllegalStateException()

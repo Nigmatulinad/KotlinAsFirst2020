@@ -18,7 +18,7 @@ package lesson12.task1
  * Класс должен иметь конструктор по умолчанию (без параметров).
  */
 class PhoneBook {
-    private val book = mutableMapOf<String, MutableSet<String>>().toSortedMap()
+    private val book = mutableMapOf<String, MutableSet<String>>()
 
     /**
      * Добавить человека.
