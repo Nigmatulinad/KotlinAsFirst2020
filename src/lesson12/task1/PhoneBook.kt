@@ -35,10 +35,7 @@ class PhoneBook {
      * и false, если человек с таким именем отсутствовал в телефонной книге
      * (во втором случае телефонная книга не должна меняться).
      */
-    fun removeHuman(name: String): Boolean = if (!book.containsKey(name)) false else {
-        book.remove(name)
-        true
-    }
+    fun removeHuman(name: String): Boolean = book.remove(name) != null
 
 
     /**
@@ -63,15 +60,14 @@ class PhoneBook {
      * и false, если человек с таким именем отсутствовал в телефонной книге
      * либо у него не было такого номера телефона.
      */
-    fun removePhone(name: String, phone: String): Boolean =
-        book.containsKey(name) && book[name]?.contains(phone)!! && book[name]?.remove(phone)!!
+    fun removePhone(name: String, phone: String): Boolean = book[name]?.remove(phone) ?: false
 
 
     /**
      * Вернуть все номера телефона заданного человека.
      * Если этого человека нет в книге, вернуть пустой список
      */
-    fun phones(name: String): Set<String> = if (book.containsKey(name)) book[name]!! else setOf()
+    fun phones(name: String): Set<String> = book[name] ?: setOf()
 
     /**
      * Вернуть имя человека по заданному номеру телефона.

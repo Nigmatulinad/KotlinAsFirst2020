@@ -208,5 +208,5 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
  * три точки данного множества, либо иметь своим диаметром отрезок,
  * соединяющий две самые удалённые точки в данном множестве.
  */
-fun minContainingCircle(vararg points: Point): Point = TODO()
+fun minContainingCircle(vararg points: Point): Circle = TODO()
 

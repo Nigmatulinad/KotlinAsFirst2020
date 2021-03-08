@@ -2,10 +2,6 @@
 
 package lesson12.task1
 
-import java.lang.Double.MAX_VALUE
-import java.lang.Double.MIN_VALUE
-import kotlin.math.abs
-
 /**
  * Класс "табличная функция".
  *
@@ -44,11 +40,7 @@ class TableFunction {
      * Удалить пару с заданным значением x.
      * Вернуть true, если пара была удалена.
      */
-    fun remove(x: Double): Boolean = if (!table.containsKey(x)) false
-    else {
-        table.remove(x)
-        true
-    }
+    fun remove(x: Double): Boolean = table.remove(x) != null
 
 
     /**
@@ -62,21 +54,20 @@ class TableFunction {
      * Если таблица пуста, бросить IllegalStateException.
      */
     fun findPair(x: Double): Pair<Double, Double>? {
-        if (table.isEmpty()) throw IllegalStateException()
+
+        val list = table.toList()
+        if (list.size == 1) return list[0]
         if (table.containsKey(x)) return x to table[x]!!
-        var difference = MAX_VALUE
-        var actual = MIN_VALUE
-        for ((arg) in table) {
-            if (abs(x - arg) <= difference) {
-                difference = abs(x - arg)
-                if (actual < arg) actual = arg
-            }
+        val (left, right) = find(list, x)
+        return when {
+            x < list[0].first -> list[0]
+            x > list.last().first -> list.last()
+            else -> if (right.first - x < x - left.first) right else left
         }
-        return actual to table[actual]!!
     }
 
     private fun find(list: List<Pair<Double, Double>>, x: Double): Pair<Pair<Double, Double>, Pair<Double, Double>> {
-        if (table.isEmpty()) throw IllegalStateException()
+        if (list.isEmpty()) throw IllegalStateException()
         var ans = (0.0 to 0.0) to (0.0 to 0.0)
         for (i in 1 until list.size) {
             if (x < list[i].first) {
