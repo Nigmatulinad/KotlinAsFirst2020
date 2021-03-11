@@ -2,9 +2,7 @@
 
 package lesson3.task1
 
-import kotlin.math.pow
 import kotlin.math.sqrt
-import kotlin.time.measureTime
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9

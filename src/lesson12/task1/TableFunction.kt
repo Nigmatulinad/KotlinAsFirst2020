@@ -54,20 +54,18 @@ class TableFunction {
      * Если таблица пуста, бросить IllegalStateException.
      */
     fun findPair(x: Double): Pair<Double, Double>? {
-
         val list = table.toList()
+        if (list.isEmpty()) throw IllegalStateException()
+        val y = table[x]
         if (list.size == 1) return list[0]
-        if (table.containsKey(x)) return x to table[x]!!
+        if (y != null) return x to y
+        if (x < list[0].first) return list[0]
+        if (x > list.last().first) return list.last()
         val (left, right) = find(list, x)
-        return when {
-            x < list[0].first -> list[0]
-            x > list.last().first -> list.last()
-            else -> if (right.first - x < x - left.first) right else left
-        }
+        return if (right.first - x < x - left.first) right else left
     }
 
     private fun find(list: List<Pair<Double, Double>>, x: Double): Pair<Pair<Double, Double>, Pair<Double, Double>> {
-        if (list.isEmpty()) throw IllegalStateException()
         var ans = (0.0 to 0.0) to (0.0 to 0.0)
         for (i in 1 until list.size) {
             if (x < list[i].first) {
@@ -88,9 +86,10 @@ class TableFunction {
      */
     fun getValue(x: Double): Double {
         val list = table.toList().toMutableList()
+        val y = table[x]
         when {
             (table.isEmpty()) -> throw IllegalStateException()
-            (table.containsKey(x)) -> return table[x]!!
+            (y != null) -> return y
             (table.size == 1) -> return list[0].second
         }
         return when {

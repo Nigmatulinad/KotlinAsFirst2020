@@ -46,9 +46,10 @@ class PhoneBook {
      * либо такой номер телефона зарегистрирован за другим человеком.
      */
     fun addPhone(name: String, phone: String): Boolean {
-        return if (!book.containsKey(name) || humanByPhone(phone) != null) false
+        val set = book[name]
+        return if (set == null || humanByPhone(phone) != null) false
         else {
-            book[name]?.add(phone)
+            set.add(phone)
             true
         }
     }
