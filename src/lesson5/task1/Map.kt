@@ -330,11 +330,11 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         val set = mutableSetOf<String>(treas[i].first)
         var cost = treas[i].second.second
         if (i != treas.size - 1) for (j in i + 1 until treas.size) {
-            while (w <= capacity) {
-                w += treas[j].second.first
-                set += treas[j].first
-                cost += treas[j].second.second
-            }
+            if (w + treas[j].second.first > capacity) break
+            w += treas[j].second.first
+            set += treas[j].first
+            cost += treas[j].second.second
+
         }
         vars += cost to set
     }
