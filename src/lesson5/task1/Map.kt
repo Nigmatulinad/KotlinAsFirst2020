@@ -2,8 +2,6 @@
 
 package lesson5.task1
 
-import kotlin.coroutines.ContinuationInterceptor
-
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -319,4 +317,27 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val treas = treasures.toList().toMutableList()
+    val giant = mutableSetOf<Pair<String, Pair<Int, Int>>>()
+    for (i in 0 until treas.size) if (treas[i].second.first > capacity) giant += treas[i]
+    treas -= giant
+    if (treas.isEmpty()) return emptySet()
+    treas.sortedBy { -it.second.first }
+    val vars = mutableListOf<Pair<Int, Set<String>>>()
+    for (i in 0 until treas.size) {
+        var w = treas[i].second.first
+        val set = mutableSetOf<String>(treas[i].first)
+        var cost = treas[i].second.second
+        if (i != treas.size - 1) for (j in i + 1 until treas.size) {
+            while (w <= capacity) {
+                w += treas[j].second.first
+                set += treas[j].first
+                cost += treas[j].second.second
+            }
+        }
+        vars += cost to set
+    }
+    vars.sortedBy { -it.first }
+    return vars[0].second
+}
