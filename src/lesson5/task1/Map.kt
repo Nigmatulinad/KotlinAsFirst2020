@@ -331,7 +331,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val array: Array<Array<Int>> = Array(capacity + 1) { Array(list.size) { 0 } }
     var cap = capacity
     for (i in list.indices) {
-        for (j in 1..capacity + 1) {
+        for (j in 1..capacity) {
             val item = list[i]
             val items = i - 1
             var weight = j
