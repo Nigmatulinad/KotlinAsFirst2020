@@ -321,38 +321,31 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val list = treasures.toList().toMutableList()
     val set = mutableSetOf<String>()
     val giant = mutableSetOf<Pair<String, Pair<Int, Int>>>()
-    for (i in 0 until list.size) if (list[i].second.first > capacity) giant += list[i]
+    for (i in list.indices) if (list[i].second.first > capacity) giant += list[i]
     list -= giant
     if (list.sumOf { it.second.first } < capacity) {
         list.forEach { set += it.first }
         return set
     }
     if (list.isEmpty()) return emptySet()
-    val array: Array<Array<Int>> = Array(capacity + 1) { Array(list.size) { 0 } }
-    var cap = capacity
-    for (i in list.indices) {
-        for (j in 1..capacity) {
-            val item = list[i]
-            val items = i - 1
-            var weight = j
-            if (i > item.second.first && array[i][j] < item.second.second) {
-                array[i][j] = item.second.second
-                weight -= item.second.first
-            }
-            if (items > 0 && weight > 0 && array[i][j] < item.second.second + array[items][weight])
-                array[i][j] += item.second.second + array[items][weight]
-        }
+    val table = mutableListOf<MutableList<Pair<Int, MutableSet<String>>>>()
+    for (i in 0..list.size) {
+        table.add(mutableListOf())
+        for (j in 0..capacity) table[i].add(0 to mutableSetOf())
     }
-    for (i in list.size downTo 1) {
-        val name = list[i - 1].first
-        val treasuresListI = list[i - 1]
-        val mass = treasuresListI.second.first
-        if (array[cap][i] > array[cap][i - 1]) {
-            if (cap - mass >= 0) {
-                cap -= mass
-                set += name
+    for (i in 1..list.size)
+        for (j in 0..capacity) {
+            val preItem = list[i - 1]
+            val name = preItem.first
+            val weight = preItem.second.first
+            val cost = preItem.second.second
+            when {
+                weight > j -> table[i][j] = table[i - 1][j]
+                table[i - 1][j - weight].first + cost > table[i - 1][j].first -> table[i][j] =
+                    table[i - 1][j - weight].first + cost to (table[i - 1][j - weight].second + name).toMutableSet()
+                else -> table[i][j] = table[i - 1][j]
             }
         }
-    }
-    return set
+    return table[list.size][capacity].second
 }
+
