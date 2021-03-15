@@ -323,7 +323,10 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val giant = mutableSetOf<Pair<String, Pair<Int, Int>>>()
     for (i in 0 until list.size) if (list[i].second.first > capacity) giant += list[i]
     list -= giant
-    list.sortBy { -it.second.first }
+    if (list.sumOf { it.second.first } < capacity) {
+        list.forEach { set += it.first }
+        return set
+    }
     if (list.isEmpty()) return emptySet()
     val array: Array<Array<Int>> = Array(capacity + 1) { Array(list.size) { 0 } }
     var cap = capacity
@@ -344,7 +347,6 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         val name = list[i - 1].first
         val treasuresListI = list[i - 1]
         val mass = treasuresListI.second.first
-        if (list.size == 1) return setOf(list[0].first)
         if (array[cap][i] > array[cap][i - 1]) {
             if (cap - mass >= 0) {
                 cap -= mass
