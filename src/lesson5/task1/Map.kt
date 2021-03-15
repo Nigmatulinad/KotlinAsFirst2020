@@ -338,6 +338,6 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         }
         vars += cost to set
     }
-    vars.sortedBy { -it.first }
+    vars.sortBy{ -it.first }
     return vars[0].second
 }
