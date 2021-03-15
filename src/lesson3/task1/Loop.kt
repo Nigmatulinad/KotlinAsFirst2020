@@ -90,6 +90,7 @@ fun digitNumber(n: Int): Int {
  */
 fun fib(n: Int): Int {
     val ans = mutableListOf<Int>(1, 1)
+    if (n in 0..1) return 1
     if (n > 1) ans[n] += ans[n - 1] + ans[n - 2]
     return ans[n]
 }
@@ -111,10 +112,8 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    val div = n / minDivisor(n)
-    return if (div == 1) 1 else div
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
+
 
 /**
  * Простая (2 балла)
@@ -133,6 +132,7 @@ fun maxDivisor(n: Int): Int {
  * этого для какого-либо начального X > 0.
  */
 fun collatzSteps(x: Int): Int = TODO()
+
 fun evk(n: Int, m: Int): Int {
     var a = n
     var b = m
@@ -159,10 +159,8 @@ fun lcm(m: Int, n: Int): Int = m * n / evk(m, n)
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    val evk = evk(m, n)
-    return evk == 1
-}
+fun isCoPrime(m: Int, n: Int): Boolean = evk(m, n) == 1
+
 
 
 /**
@@ -205,10 +203,8 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    val a = revert(n)
-    return a == n
-}
+fun isPalindrome(n: Int): Boolean = revert(n) == n
+
 
 /**
  * Средняя (3 балла)

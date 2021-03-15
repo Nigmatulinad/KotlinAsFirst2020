@@ -3,9 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import lesson3.task1.digitNumber
-import lesson3.task1.revert
-import javax.lang.model.element.NestingKind
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -182,7 +179,6 @@ fun polynom(p: List<Int>, x: Int): Int {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    if (list.isEmpty()) return list
     for (i in 1 until list.size) list[i] += list[i - 1]
     return list
 }

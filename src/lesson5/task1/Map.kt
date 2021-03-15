@@ -16,7 +16,7 @@ package lesson5.task1
  */
 fun shoppingListCost(
     shoppingList: List<String>,
-    costs: Map<String, Double>
+    costs: Map<String, Double>,
 ): Double {
     var totalCost = 0.0
 
@@ -38,7 +38,7 @@ fun shoppingListCost(
  */
 fun filterByCountryCode(
     phoneBook: MutableMap<String, String>,
-    countryCode: String
+    countryCode: String,
 ) {
     val namesToRemove = mutableListOf<String>()
 
@@ -61,7 +61,7 @@ fun filterByCountryCode(
  */
 fun removeFillerWords(
     text: List<String>,
-    vararg fillerWords: String
+    vararg fillerWords: String,
 ): List<String> {
     val fillerWordSet = setOf(*fillerWords)
 
@@ -318,26 +318,39 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    val treas = treasures.toList().toMutableList()
+    val list = treasures.toList().toMutableList()
+    val set = mutableSetOf<String>()
     val giant = mutableSetOf<Pair<String, Pair<Int, Int>>>()
-    for (i in 0 until treas.size) if (treas[i].second.first > capacity) giant += treas[i]
-    treas -= giant
-    if (treas.isEmpty()) return emptySet()
-    treas.sortBy { -it.second.first }
-    val vars = mutableListOf<Pair<Int, Set<String>>>()
-    for (i in 0 until treas.size) {
-        var w = treas[i].second.first
-        val set = mutableSetOf<String>(treas[i].first)
-        var cost = treas[i].second.second
-        if (i != treas.size - 1) for (j in i + 1 until treas.size) {
-            if (w + treas[j].second.first > capacity) break
-            w += treas[j].second.first
-            set += treas[j].first
-            cost += treas[j].second.second
-
+    for (i in 0 until list.size) if (list[i].second.first > capacity) giant += list[i]
+    list -= giant
+    list.sortBy { -it.second.first }
+    if (list.isEmpty()) return emptySet()
+    val array: Array<Array<Int>> = Array(capacity + 1) { Array(list.size) { 0 } }
+    var cap = capacity
+    for (i in list.indices) {
+        for (j in 1..capacity + 1) {
+            val item = list[i]
+            val items = i - 1
+            var weight = j
+            if (i > item.second.first && array[i][j] < item.second.second) {
+                array[i][j] = item.second.second
+                weight -= item.second.first
+            }
+            if (items > 0 && weight > 0 && array[i][j] < item.second.second + array[items][weight])
+                array[i][j] += item.second.second + array[items][weight]
         }
-        vars += cost to set
     }
-    vars.sortBy { it.first }
-    return vars.last().second
+    for (i in list.size downTo 1) {
+        val name = list[i - 1].first
+        val treasuresListI = list[i - 1]
+        val mass = treasuresListI.second.first
+        if (list.size == 1) return setOf(list[0].first)
+        if (array[cap][i] > array[cap][i - 1]) {
+            if (cap - mass >= 0) {
+                cap -= mass
+                set += name
+            }
+        }
+    }
+    return set
 }

@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
 
 package lesson6.task1
+import kotlin.math.max
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -79,13 +80,13 @@ fun dateStrToDigit(str: String): String {
     val list = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября",
         "ноября", "декабля")
     val parts = str.split(" ")
-    if (parts.size != 3 || parts[0].toInt() !in 0..31 || list.indexOf(parts[1]) == -1) return ""
+    return if (parts.size != 3 || parts[0].toInt() !in 0..31 || list.indexOf(parts[1]) == -1) ""
     else {
         val day = parts[0].toInt()
         val month = list.indexOf(parts[1]) + 1
         val year = parts[2].toInt()
         val short = setOf<Int>(4, 6, 7, 9, 11)
-        return if ((month !in short && day > 30) || (month == 2 && day > 28)) ""
+        if ((month !in short && day > 30) || (month == 2 && day > 28)) ""
         else String.format("%02d.%02d.%02d", day, month, year)
     }
 }
@@ -137,7 +138,7 @@ fun bestLongJump(jumps: String): Int {
         if ((i != "%") && (i != "-"))
             try {
                 val n = i.toIntOrNull() ?: return -1
-                ans = kotlin.math.max(ans, n)
+                ans = max(ans, n)
             } catch (e: NumberFormatException) {
                 return -1
             }
@@ -164,7 +165,7 @@ fun bestHighJump(jumps: String): Int {
     for (i in parts.indices step 2) {
         val result = parts[i].toIntOrNull() ?: return -1
         if (!parts[i + 1].all { it in correctChars }) return -1
-        if ('+' in parts[i + 1]) best = kotlin.math.max(best, result)
+        if ('+' in parts[i + 1]) best = max(best, result)
     }
     return best
 }
