@@ -323,7 +323,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     for (i in 0 until treas.size) if (treas[i].second.first > capacity) giant += treas[i]
     treas -= giant
     if (treas.isEmpty()) return emptySet()
-    treas.sortedBy { -it.second.first }
+    treas.sortBy { -it.second.first }
     val vars = mutableListOf<Pair<Int, Set<String>>>()
     for (i in 0 until treas.size) {
         var w = treas[i].second.first
@@ -338,6 +338,6 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         }
         vars += cost to set
     }
-    vars.sortBy{ -it.first }
-    return vars[0].second
+    vars.sortBy { it.first }
+    return vars.last().second
 }
